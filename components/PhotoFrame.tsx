@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Download, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import { Upload, Download, RefreshCw, Image as ImageIcon, ZoomIn, ZoomOut, Move } from 'lucide-react';
 
 export const PhotoFrame = () => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Canvas State for manipulation
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -12,7 +18,12 @@ export const PhotoFrame = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = new Image();
-        img.onload = () => setImage(img);
+        img.onload = () => {
+           setImage(img);
+           // Reset transforms on new image
+           setZoom(1);
+           setPan({ x: 0, y: 0 });
+        };
         img.src = event.target?.result as string;
       };
       reader.readAsDataURL(file);
@@ -29,13 +40,25 @@ export const PhotoFrame = () => {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw User Image (Object Fit: Cover)
-    const scale = Math.max(canvas.width / image.width, canvas.height / image.height);
-    const x = (canvas.width / 2) - (image.width / 2) * scale;
-    const y = (canvas.height / 2) - (image.height / 2) * scale;
+    // --- DRAW USER IMAGE WITH TRANSFORMS ---
+    ctx.save();
     
-    ctx.drawImage(image, x, y, image.width * scale, image.height * scale);
+    // Translate to center to apply zoom/pan from center
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(zoom, zoom);
+    ctx.translate(pan.x, pan.y);
 
+    // Calculate "cover" dimensions
+    const scale = Math.max(canvas.width / image.width, canvas.height / image.height);
+    const w = image.width * scale;
+    const h = image.height * scale;
+
+    // Draw image centered at (0,0) in transformed space
+    ctx.drawImage(image, -w / 2, -h / 2, w, h);
+    
+    ctx.restore();
+
+    // --- DRAW OVERLAY (Fixed on top) ---
     // Draw Gradient Overlay (Bottom)
     const gradient = ctx.createLinearGradient(0, canvas.height * 0.5, 0, canvas.height);
     gradient.addColorStop(0, 'transparent');
@@ -76,7 +99,7 @@ export const PhotoFrame = () => {
     if (image) {
       drawCanvas();
     }
-  }, [image]);
+  }, [image, zoom, pan]);
 
   const handleDownload = () => {
     const canvas = canvasRef.current;
@@ -86,6 +109,40 @@ export const PhotoFrame = () => {
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
+  };
+
+  // Mouse/Touch Handlers for Panning
+  const handleMouseDown = (e: React.MouseEvent) => {
+     setIsDragging(true);
+     setDragStart({ x: e.clientX - pan.x * zoom, y: e.clientY - pan.y * zoom }); // Adjust for zoom
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+     if (!isDragging) return;
+     const newX = (e.clientX - dragStart.x) / zoom;
+     const newY = (e.clientY - dragStart.y) / zoom;
+     setPan({ x: newX, y: newY });
+  };
+
+  const handleMouseUp = () => {
+     setIsDragging(false);
+  };
+
+  // Touch support for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      setDragStart({ x: touch.clientX - pan.x * zoom, y: touch.clientY - pan.y * zoom });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      const newX = (touch.clientX - dragStart.x) / zoom;
+      const newY = (touch.clientY - dragStart.y) / zoom;
+      setPan({ x: newX, y: newY });
+      // Prevent scrolling while dragging image
+      if(e.cancelable) e.preventDefault(); 
   };
 
   return (
@@ -106,7 +163,7 @@ export const PhotoFrame = () => {
              আপনার ছবিতে <span className="text-emerald-400">ধানের শীষের ফ্রেম</span>
           </h2>
           <p className="text-emerald-200 max-w-2xl mx-auto">
-            আপনার ছবি আপলোড করে সমর্থন জানান। ছবিটি ডাউনলোড করে সোশ্যাল মিডিয়ায় শেয়ার করুন।
+            আপনার ছবি আপলোড করে সমর্থন জানান। ছবিটি জুম এবং মুভ করে এডজাস্ট করুন।
           </p>
         </div>
 
@@ -117,10 +174,12 @@ export const PhotoFrame = () => {
                 <label className="block text-sm font-medium text-emerald-200">১. আপনার ছবি সিলেক্ট করুন</label>
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-emerald-600 hover:border-emerald-400 rounded-xl p-8 text-center cursor-pointer transition-colors group"
+                  className="border-2 border-dashed border-emerald-600 hover:border-emerald-400 rounded-xl p-8 text-center cursor-pointer transition-colors group relative overflow-hidden"
                 >
-                    <Upload className="mx-auto h-12 w-12 text-emerald-500 group-hover:text-emerald-300 mb-3" />
-                    <p className="text-sm text-gray-300 group-hover:text-white">Click to upload image</p>
+                    <Upload className="mx-auto h-12 w-12 text-emerald-500 group-hover:text-emerald-300 mb-3 relative z-10" />
+                    <p className="text-sm text-gray-300 group-hover:text-white relative z-10">
+                        {image ? "ছবি পরিবর্তন করতে ক্লিক করুন" : "Click to upload image"}
+                    </p>
                     <input 
                       ref={fileInputRef}
                       type="file" 
@@ -132,29 +191,59 @@ export const PhotoFrame = () => {
              </div>
 
              {image && (
-               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-                  <label className="block text-sm font-medium text-emerald-200">২. পোস্টার ডাউনলোড করুন</label>
-                  <button 
-                    onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
-                  >
-                    <Download size={20} />
-                    ডাউনলোড পোস্টার
-                  </button>
-                  <button 
-                    onClick={() => { setImage(null); if(fileInputRef.current) fileInputRef.current.value = ''; }}
-                    className="w-full flex items-center justify-center gap-2 bg-transparent hover:bg-white/5 text-emerald-200 py-3 rounded-xl font-medium transition-all"
-                  >
-                    <RefreshCw size={16} />
-                    রিসেট করুন
-                  </button>
+               <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
+                  
+                  {/* Zoom Control */}
+                  <div className="space-y-2">
+                     <div className="flex justify-between text-sm text-emerald-200">
+                        <span className="flex items-center gap-1"><ZoomOut size={14}/> জুম আউট</span>
+                        <span className="flex items-center gap-1">জুম ইন <ZoomIn size={14}/></span>
+                     </div>
+                     <input 
+                       type="range" 
+                       min="1" 
+                       max="3" 
+                       step="0.05"
+                       value={zoom}
+                       onChange={(e) => setZoom(parseFloat(e.target.value))}
+                       className="w-full h-2 bg-emerald-700 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+                     />
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs text-emerald-300 bg-emerald-800/50 p-3 rounded-lg border border-emerald-700">
+                     <Move size={14} />
+                     <span>ছবির উপর ক্লিক করে ড্র্যাগ করে পজিশন ঠিক করুন</span>
+                  </div>
+
+                  <div className="pt-2 space-y-3">
+                    <label className="block text-sm font-medium text-emerald-200">২. পোস্টার ডাউনলোড করুন</label>
+                    <button 
+                      onClick={handleDownload}
+                      className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
+                    >
+                      <Download size={20} />
+                      ডাউনলোড পোস্টার
+                    </button>
+                    <button 
+                      onClick={() => { 
+                          setImage(null); 
+                          setZoom(1);
+                          setPan({x:0, y:0});
+                          if(fileInputRef.current) fileInputRef.current.value = ''; 
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-transparent hover:bg-white/5 text-emerald-200 py-3 rounded-xl font-medium transition-all"
+                    >
+                      <RefreshCw size={16} />
+                      রিসেট করুন
+                    </button>
+                  </div>
                </div>
              )}
           </div>
 
           {/* Preview Area */}
           <div className="flex justify-center">
-            <div className="relative rounded-lg shadow-2xl overflow-hidden ring-8 ring-white/10 bg-emerald-950">
+            <div className="relative rounded-lg shadow-2xl overflow-hidden ring-8 ring-white/10 bg-emerald-950 cursor-move touch-none">
                {!image ? (
                  <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] flex flex-col items-center justify-center text-emerald-700/50">
                     <ImageIcon size={64} className="mb-4" />
@@ -165,7 +254,14 @@ export const PhotoFrame = () => {
                     ref={canvasRef} 
                     width={500} 
                     height={500} 
-                    className="w-full max-w-[400px] h-auto"
+                    className="w-full max-w-[400px] h-auto touch-none"
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleMouseUp}
                  />
                )}
             </div>

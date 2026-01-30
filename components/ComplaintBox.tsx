@@ -27,9 +27,13 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
 
     try {
       // Using no-cors mode for Google Apps Script Web App
+      // Adding explicit formType: 'complaint'
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          formType: 'complaint'
+        }),
         mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',

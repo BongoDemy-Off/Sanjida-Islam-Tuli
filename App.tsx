@@ -7,6 +7,7 @@ import { Schedule } from './components/Schedule';
 import { PhotoFrame } from './components/PhotoFrame';
 import { ComplaintBox } from './components/ComplaintBox';
 import { VoterBadge } from './components/VoterBadge';
+import { Loader2 } from 'lucide-react';
 
 // Config Sheet URL
 const CONFIG_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9us586xY7VMS2hipRpKqIkzc6wpEE7hpzkJj7RRgU5OU6v1Bh9wlrTEzFdeO6GmGtXXFObyAWWuD_/pub?gid=1619778978&single=true&output=csv';
@@ -23,6 +24,7 @@ function App() {
     polling_link: '#',
     youtube_video_id: 'dQw4w9WgXcQ' // Default placeholder
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -56,11 +58,22 @@ function App() {
 
       } catch (error) {
         console.error('Error loading site config:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchConfig();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <Loader2 className="w-12 h-12 text-emerald-600 animate-spin mb-4" />
+        <p className="text-gray-500 font-medium animate-pulse">লোড হচ্ছে...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white text-gray-900 selection:bg-emerald-100 selection:text-emerald-900 font-sans">
