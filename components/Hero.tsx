@@ -4,6 +4,13 @@ import { Image } from './ui/Image';
 import { ArrowRight, Image as ImageIcon, FileText } from 'lucide-react';
 
 export const Hero = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-white via-emerald-50/50 to-white pt-20">
       {/* Background decoration */}
@@ -43,6 +50,7 @@ export const Hero = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => scrollToSection('photoframe')}
                 className="relative group bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-emerald-200 transition-all flex items-center gap-3 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
@@ -53,6 +61,7 @@ export const Hero = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => scrollToSection('manifesto')}
                 className="group border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-lg px-8 py-4 rounded-full font-semibold transition-all flex items-center gap-2"
               >
                 <FileText className="w-5 h-5 group-hover:rotate-12 transition-transform" />
