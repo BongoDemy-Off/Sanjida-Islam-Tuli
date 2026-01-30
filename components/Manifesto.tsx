@@ -35,7 +35,11 @@ const manifestoItems = [
   }
 ];
 
-export const Manifesto = () => {
+interface ManifestoProps {
+  pdfLink: string;
+}
+
+export const Manifesto: React.FC<ManifestoProps> = ({ pdfLink }) => {
   const [activeId, setActiveId] = useState<number | null>(1);
 
   return (
@@ -52,10 +56,15 @@ export const Manifesto = () => {
             <p className="text-gray-600 text-lg">
               একটি আধুনিক, নিরাপদ এবং মানবিক ঢাকা-১৪ গড়ার লক্ষ্যে আমার সুনির্দিষ্ট পরিকল্পনা।
             </p>
-            <button className="flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg">
+            <a 
+              href={pdfLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg"
+            >
               <Download size={20} />
               সম্পূর্ণ পিডিএফ ডাউনলোড
-            </button>
+            </a>
           </div>
 
           {/* Right: Accordion */}

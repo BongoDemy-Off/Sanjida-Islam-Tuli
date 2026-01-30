@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Award, FileDown } from 'lucide-react';
 
-export const VoterBadge = () => {
+interface VoterBadgeProps {
+  pollingLink: string;
+}
+
+export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
   const [pledged, setPledged] = useState(false);
 
   return (
@@ -48,10 +52,15 @@ export const VoterBadge = () => {
 
           {/* Polling Center Link */}
           <div className="mt-8 text-center">
-            <button className="inline-flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-medium transition-colors border-b-2 border-transparent hover:border-emerald-200 pb-1">
+            <a 
+              href={pollingLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-medium transition-colors border-b-2 border-transparent hover:border-emerald-200 pb-1"
+            >
                <FileDown size={18} />
                ভোটকেন্দ্রের তালিকা ডাউনলোড করুন (PDF)
-            </button>
+            </a>
           </div>
 
        </div>

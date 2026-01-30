@@ -4,7 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhv6U5qwl-sO7uLQ-9RB3po2DX_7mtfVY1VXgHU4nYgk35SQaHqfFqTS5DoCy006m5Vw/exec';
 
-export const ComplaintBox = () => {
+interface ComplaintBoxProps {
+  videoId: string;
+}
+
+export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -65,7 +69,7 @@ export const ComplaintBox = () => {
             <div className="aspect-video bg-gray-200 rounded-2xl overflow-hidden shadow-lg relative group">
                 <iframe 
                   className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=placeholder" 
+                  src={`https://www.youtube.com/embed/${videoId}`}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowFullScreen
