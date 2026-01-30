@@ -78,7 +78,7 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
 
             <div className="bg-emerald-100/50 p-6 rounded-xl border border-emerald-100">
                <h4 className="font-bold text-emerald-900 mb-2">জরুরি প্রয়োজনে:</h4>
-               <p className="text-emerald-800">হটলাইন: ০১৭০০-০০০০০০ (সকাল ৯টা - রাত ১০টা)</p>
+               <p className="text-emerald-800">হটলাইন: ০১৭১৩-৪৮১২৪৩ (সকাল ৯টা - রাত ১০টা)</p>
             </div>
           </div>
 
@@ -198,4 +198,4 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
       </div>
     </section>
   );
-};
+}
