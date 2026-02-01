@@ -61,15 +61,15 @@ export const Footer = () => {
             <ul className="space-y-4 mb-8">
               <li className="flex items-start gap-3 text-emerald-200/90 text-sm">
                 <MapPin className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                <span>Campaign Office: Mirpur, Dhaka-14</span>
+                <span>Ruhani Super Market, Mirpur, Dhaka, Bangladesh</span>
               </li>
               <li className="flex items-center gap-3 text-emerald-200/90 text-sm">
                 <Phone className="w-5 h-5 text-emerald-500 shrink-0" />
-                <span>+880 1XXX XXXXXX</span>
+                <span>+8801713-481243</span>
               </li>
               <li className="flex items-center gap-3 text-emerald-200/90 text-sm">
                 <Mail className="w-5 h-5 text-emerald-500 shrink-0" />
-                <span>info@sanjidatuli.com</span>
+                <span>sanjida_tulee@yahoo.com</span>
               </li>
             </ul>
 

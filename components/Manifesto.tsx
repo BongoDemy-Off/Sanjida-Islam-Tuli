@@ -57,7 +57,7 @@ export const Manifesto: React.FC<ManifestoProps> = ({ pdfLink }) => {
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
               আমার ইশতেহার <br/>
-              <span className="text-emerald-600">রূপকল্প ২০৩০</span>
+              <span className="text-emerald-600">ভিশন ২০৩০</span>
             </h2>
             <p className="text-gray-600 text-lg">
               একটি আধুনিক, নিরাপদ এবং মানবিক ঢাকা-১৪ গড়ার লক্ষ্যে আমার সুনির্দিষ্ট পরিকল্পনা।

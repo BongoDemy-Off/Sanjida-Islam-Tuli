@@ -23,8 +23,9 @@ export const About = () => {
             <div className="group relative rounded-2xl overflow-hidden shadow-2xl aspect-[3/4]">
               {/* Image that turns color on hover */}
               <Image 
-                src="https://picsum.photos/600/800" 
-                alt="Sanjida Tulee Portrait"
+                src="https://lh3.googleusercontent.com/d/1-UhCv3RlJQdtxxsuY14CELdHw9XBjm4T" 
+                alt="Engr. Sanjida Islam Tulee - Mayer Daak Coordinator"
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
