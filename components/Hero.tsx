@@ -85,8 +85,9 @@ export const Hero = () => {
                 {/* Candidate Image Placeholder */}
                 <div className="absolute inset-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
                     <Image
-                        src="https://picsum.photos/800/1000?grayscale" 
+                        src="https://lh3.googleusercontent.com/d/1UOdjS5aSFU5IT3u9nRk-f0DHnTar3la5" 
                         alt="Engr. Sanjida Islam Tulee"
+                        referrerPolicy="no-referrer"
                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                     />
                     

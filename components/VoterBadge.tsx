@@ -205,7 +205,13 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
 
        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-3xl p-8 md:p-12 shadow-sm border border-emerald-100 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+          <motion.div 
+             initial={{ opacity: 0, scale: 0.95 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.6 }}
+             className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-3xl p-8 md:p-12 shadow-sm border border-emerald-100 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left"
+          >
              <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-200/50 text-emerald-800 text-xs font-bold uppercase tracking-wider">
                    তরুণ ভোটার
@@ -240,9 +246,15 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
                   )}
                 </motion.button>
              </div>
-          </div>
+          </motion.div>
 
-          <div className="mt-8 text-center">
+          <motion.div 
+             initial={{ opacity: 0 }}
+             whileInView={{ opacity: 1 }}
+             viewport={{ once: true }}
+             transition={{ delay: 0.4 }}
+             className="mt-8 text-center"
+          >
             <a 
               href={pollingLink}
               target="_blank"
@@ -252,7 +264,7 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
                <FileDown size={18} />
                ভোটকেন্দ্রের তালিকা ডাউনলোড করুন (PDF)
             </a>
-          </div>
+          </motion.div>
 
        </div>
 

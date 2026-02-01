@@ -6,32 +6,32 @@ const manifestoItems = [
   {
     id: 1,
     icon: Droplets,
-    title: "জলাবদ্ধতা নিরসন",
-    detail: "Recovery of canals in Mirpur and modern drainage system."
+    title: "জলাবদ্ধতা নিরসন ও আধুনিক ড্রেনেজ ব্যবস্থা",
+    detail: "মিরপুরের দীর্ঘদিনের প্রধান সমস্যা জলাবদ্ধতা। নির্বাচিত হলে আধুনিক ড্রেনেজ মাস্টারপ্ল্যান বাস্তবায়নের মাধ্যমে বৃষ্টির পানি দ্রুত নিষ্কাশনের ব্যবস্থা করা হবে। বেদখল হয়ে যাওয়া খালগুলো পুনরুদ্ধার করে পানির প্রবাহ স্বাভাবিক রাখা হবে।"
   },
   {
     id: 2,
     icon: Shield,
-    title: "নিরাপদ জনপদ",
-    detail: "CCTV coverage in every ward and community policing."
+    title: "নিরাপদ ও সন্ত্রাসমুক্ত জনপদ",
+    detail: "মাদক, চাঁদাবাজি এবং কিশোর গ্যাং কালচার কঠোর হস্তে দমন করা হবে। এলাকার প্রতিটি গলি ও মোড়ে সিসি ক্যামেরা স্থাপন এবং কমিউনিটি পুলিশিং জোরদার করার মাধ্যমে নারী, শিশু ও বয়স্কদের জন্য একটি নিরাপদ ও অভয়ারণ্য গড়ে তোলা হবে।"
   },
   {
     id: 3,
     icon: GraduationCap,
-    title: "তারুণ্যের কর্মসংস্থান",
-    detail: "Freelancing hubs and IT training centers."
+    title: "তারুণ্যের কর্মসংস্থান ও ফ্রিল্যান্সিং হাব",
+    detail: "বেকার সমস্যা সমাধানে যুবকদের জন্য কারিগরি প্রশিক্ষণের ব্যবস্থা করা হবে। মিরপুরে একটি আধুনিক 'আইটি ইনকিউবেটর' বা ফ্রিল্যান্সিং হাব স্থাপন করা হবে, যেখানে তরুণরা প্রযুক্তিগত দক্ষতা কাজে লাগিয়ে ঘরে বসেই বৈদেশিক মুদ্রা অর্জন করতে পারবে।"
   },
   {
     id: 4,
     icon: HeartHandshake,
-    title: "নারী ও শিশু সুরক্ষা",
-    detail: "Zero tolerance against harassment."
+    title: "নারী ও শিশু সুরক্ষা এবং শিক্ষা",
+    detail: "নারীদের জন্য নিরাপদ যাতায়াত ব্যবস্থা নিশ্চিত করা হবে। শিক্ষাপ্রতিষ্ঠানগুলোর মান উন্নয়ন এবং ঝরে পড়া রোধে বিশেষ বৃত্তি চালু করা হবে। কর্মজীবী মায়েদের সুবিধার্থে এলাকায় মানসম্মত 'ডে-কেয়ার সেন্টার' স্থাপন করা হবে।"
   },
   {
     id: 5,
     icon: Users,
-    title: "জনতার মুখোমুখি",
-    detail: "Quarterly public hearings to ensure accountability."
+    title: "স্মার্ট নাগরিক সেবা ও বর্জ্য ব্যবস্থাপনা",
+    detail: "নাগরিক সেবা (যেমন: ট্রেড লাইসেন্স, জন্ম নিবন্ধন) প্রাপ্তি সহজ ও দুর্নীতিমুক্ত করতে ডিজিটালাইজেশন করা হবে। আধুনিক বর্জ্য ব্যবস্থাপনা নিশ্চিত করে যত্রতত্র ময়লা ফেলার সংস্কৃতি দূর করা হবে এবং পরিবেশবান্ধব গ্রিন জোন গড়ে তোলা হবে।"
   }
 ];
 
@@ -45,7 +45,13 @@ export const Manifesto: React.FC<ManifestoProps> = ({ pdfLink }) => {
   return (
     <section id="manifesto" className="py-24 bg-emerald-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start"
+        >
           
           {/* Left: Sticky Header */}
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
@@ -69,9 +75,13 @@ export const Manifesto: React.FC<ManifestoProps> = ({ pdfLink }) => {
 
           {/* Right: Accordion */}
           <div className="lg:col-span-8 space-y-4">
-            {manifestoItems.map((item) => (
-              <div 
+            {manifestoItems.map((item, index) => (
+              <motion.div 
                 key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`bg-white rounded-xl overflow-hidden border transition-all duration-300 ${activeId === item.id ? 'border-emerald-500 shadow-md ring-1 ring-emerald-500/20' : 'border-gray-200 hover:border-emerald-300'}`}
               >
                 <button
@@ -105,11 +115,11 @@ export const Manifesto: React.FC<ManifestoProps> = ({ pdfLink }) => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );

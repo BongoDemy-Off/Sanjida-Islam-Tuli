@@ -1,11 +1,18 @@
 import React from 'react';
 import { Facebook, Youtube, Twitter, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const Footer = () => {
   return (
     <footer className="bg-emerald-900 text-white pt-16 pb-8 border-t border-emerald-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8 mb-12">
+        <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.6 }}
+           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8 mb-12"
+        >
           
           {/* Column 1: Brand Info */}
           <div className="space-y-6">
@@ -79,10 +86,16 @@ export const Footer = () => {
             </div>
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Footer Bottom */}
-        <div className="pt-8 border-t border-emerald-800/50 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <motion.div 
+           initial={{ opacity: 0 }}
+           whileInView={{ opacity: 1 }}
+           viewport={{ once: true }}
+           transition={{ delay: 0.4 }}
+           className="pt-8 border-t border-emerald-800/50 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left"
+        >
           <p className="text-emerald-400/60 text-sm">
             © 2026 Engr. Sanjida Islam Tulee. All rights reserved.
           </p>
@@ -90,7 +103,7 @@ export const Footer = () => {
             <a href="#" className="hover:text-emerald-200 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-emerald-200 transition-colors">Terms of Service</a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

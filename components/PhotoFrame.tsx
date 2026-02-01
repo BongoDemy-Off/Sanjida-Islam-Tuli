@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Download, RefreshCw, Image as ImageIcon, ZoomIn, ZoomOut, Move } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const PhotoFrame = () => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -154,7 +155,13 @@ export const PhotoFrame = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12">
+        <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.6 }}
+           className="text-center mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-800 text-emerald-100 text-sm font-semibold mb-4 border border-emerald-700">
             <ImageIcon size={16} />
             <span>ক্যাম্পেইন</span>
@@ -165,11 +172,17 @@ export const PhotoFrame = () => {
           <p className="text-emerald-200 max-w-2xl mx-auto">
             আপনার ছবি আপলোড করে সমর্থন জানান। ছবিটি জুম এবং মুভ করে এডজাস্ট করুন।
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Controls */}
-          <div className="space-y-6 bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+          <motion.div
+             initial={{ opacity: 0, x: -30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.6, delay: 0.2 }}
+             className="space-y-6 bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm"
+          >
              <div className="space-y-4">
                 <label className="block text-sm font-medium text-emerald-200">১. আপনার ছবি সিলেক্ট করুন</label>
                 <div 
@@ -239,10 +252,16 @@ export const PhotoFrame = () => {
                   </div>
                </div>
              )}
-          </div>
+          </motion.div>
 
           {/* Preview Area */}
-          <div className="flex justify-center">
+          <motion.div
+             initial={{ opacity: 0, x: 30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.6, delay: 0.4 }}
+             className="flex justify-center"
+          >
             <div className="relative rounded-lg shadow-2xl overflow-hidden ring-8 ring-white/10 bg-emerald-950 cursor-move touch-none">
                {!image ? (
                  <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] flex flex-col items-center justify-center text-emerald-700/50">
@@ -265,7 +284,7 @@ export const PhotoFrame = () => {
                  />
                )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

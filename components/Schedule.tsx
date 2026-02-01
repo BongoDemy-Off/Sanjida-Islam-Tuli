@@ -57,7 +57,13 @@ export const Schedule = () => {
   return (
     <section id="schedule" className="py-24 bg-white scroll-mt-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-sm font-semibold mb-4">
             <Calendar size={16} />
             <span>লাইভ আপডেট</span>
@@ -65,9 +71,15 @@ export const Schedule = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
             আজকের কর্মসূচি
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden ring-1 ring-gray-100">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden ring-1 ring-gray-100"
+        >
           <div className="p-4 bg-gray-50/50 border-b border-gray-200 flex justify-between items-center backdrop-blur-sm sticky top-0 z-10">
             <span className="font-semibold text-gray-700 pl-2">রিয়েল-টাইম শিডিউল</span>
             <button 
@@ -109,9 +121,10 @@ export const Schedule = () => {
                  {schedule.map((item, index) => (
                    <motion.div 
                      key={index}
-                     initial={{ opacity: 0, y: 10 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ delay: index * 0.1 }}
+                     initial={{ opacity: 0, x: -20 }}
+                     whileInView={{ opacity: 1, x: 0 }}
+                     viewport={{ once: true, margin: "-50px" }}
+                     transition={{ delay: index * 0.1, duration: 0.5 }}
                      className="relative pl-6 md:pl-8 pb-10 last:pb-0 group"
                    >
                      {/* Timeline Dot */}
@@ -137,7 +150,7 @@ export const Schedule = () => {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

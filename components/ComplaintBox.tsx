@@ -59,7 +59,13 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           
           {/* Left: Video & Info */}
-          <div className="space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
+          >
             <div>
                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                  জনতার মুখোমুখি
@@ -84,10 +90,16 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
                <h4 className="font-bold text-emerald-900 mb-2">জরুরি প্রয়োজনে:</h4>
                <p className="text-emerald-800">হটলাইন: ০১৭১৩-৪৮১২৪৩ (সকাল ৯টা - রাত ১০টা)</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right: Form */}
-          <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden"
+          >
             <h3 className="text-2xl font-bold text-gray-900 mb-6">আপনার সমস্যা ও পরামর্শ জানান</h3>
             
             <AnimatePresence mode="wait">
@@ -196,7 +208,7 @@ export const ComplaintBox: React.FC<ComplaintBoxProps> = ({ videoId }) => {
                 </motion.form>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
         </div>
       </div>
