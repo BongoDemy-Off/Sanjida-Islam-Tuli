@@ -77,7 +77,7 @@ export const PhotoFrame = () => {
     ctx.fillText('I Support', canvas.width / 2, canvas.height - 100);
     
     ctx.font = 'bold 36px sans-serif';
-    ctx.fillText('Engr. Sanjida Tuli', canvas.width / 2, canvas.height - 60);
+    ctx.fillText('Engr. Sanjida Tulee', canvas.width / 2, canvas.height - 60);
 
     // Subtitle
     ctx.font = '500 24px sans-serif';
@@ -105,7 +105,7 @@ export const PhotoFrame = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const link = document.createElement('a');
-      link.download = 'sanjida-tuli-support-poster.png';
+      link.download = 'sanjida-tulee-support-poster.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }

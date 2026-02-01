@@ -86,7 +86,7 @@ export const Hero = () => {
                 <div className="absolute inset-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
                     <Image
                         src="https://picsum.photos/800/1000?grayscale" 
-                        alt="Engr. Sanjida Islam Tuli"
+                        alt="Engr. Sanjida Islam Tulee"
                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                     />
                     

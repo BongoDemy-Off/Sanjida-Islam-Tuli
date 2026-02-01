@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, FileDown, Share2, Facebook, Download, X, Check, Loader2, Sparkles } from 'lucide-react';
+import { Award, FileDown, Share2, Facebook, Twitter, Download, X, Check, Loader2, Sparkles } from 'lucide-react';
 
 interface VoterBadgeProps {
   pollingLink: string;
@@ -124,7 +124,7 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.font = '400 28px sans-serif';
     ctx.letterSpacing = '0px';
-    ctx.fillText('Engr. Sanjida Islam Tuli | Dhaka-14', 540, 1020);
+    ctx.fillText('Engr. Sanjida Islam Tulee | Dhaka-14', 540, 1020);
 
     // Convert to Blob & URL
     canvas.toBlob((blob) => {
@@ -139,33 +139,41 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
   };
 
   // --- TASK 3: SMART SHARE LOGIC ---
-  const handleShare = async () => {
-    if (!currentBlob) return;
+  const shareText = "আগামীর ঢাকা আমার হাতে! আমি পরিবর্তনের পক্ষে। #Dhaka14 #GenZVote";
+  const shareUrl = "https://sanjida-islam-tuli.vercel.app";
 
-    // 1. Mobile Native Share
-    if (navigator.share) {
+  const handleFacebookShare = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+  };
+
+  const handleTwitterShare = () => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share && currentBlob) {
         try {
             const file = new File([currentBlob], 'my-vote-my-rules.png', { type: 'image/png' });
             await navigator.share({
                 title: 'My Vote, My Rules',
-                text: 'আগামীর ঢাকা আমার হাতে! আমি পরিবর্তনের পক্ষে। #Dhaka14 #GenZVote',
+                text: shareText,
+                url: shareUrl,
                 files: [file]
             });
             showToast('শেয়ার সম্পন্ন হয়েছে!');
             return;
         } catch (error) {
-            console.log('Native share failed/cancelled, falling back.');
+            console.log('Native share cancelled');
+        }
+    } else {
+        // Fallback: Copy Link
+        try {
+            await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+            showToast('লিংক কপি হয়েছে! ছবিটি ডাউনলোড করে পোস্ট করুন।');
+        } catch (err) {
+            showToast('ব্রাউজার সাপোর্ট করছে না।');
         }
     }
-
-    // 2. Desktop Fallback
-    handleDownload(); 
-    
-    // Open Facebook Sharer (Post Prompt)
-    window.open('https://www.facebook.com/sharer/sharer.php?u=https://sanjida-islam-tuli.vercel.app', '_blank', 'noopener,noreferrer');
-    
-    // Toast
-    showToast('ব্যাজটি ডাউনলোড হয়েছে! ফেসবুকে আপলোড করুন।');
   };
 
   const handleDownload = () => {
@@ -286,24 +294,55 @@ export const VoterBadge: React.FC<VoterBadgeProps> = ({ pollingLink }) => {
                     </div>
 
                     {/* Actions */}
-                    <div className="p-6 space-y-3">
+                    <div className="p-6 space-y-4">
                         <button 
                             onClick={handleDownload}
-                            className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 rounded-xl font-bold transition-all"
+                            className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all active:scale-95"
                         >
                             <Download size={20} />
                             সেভ করুন (Download)
                         </button>
                         
-                        <button 
-                            onClick={handleShare}
-                            className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all transform active:scale-95"
-                        >
-                            <Share2 size={20} />
-                            সবার সাথে শেয়ার করুন
-                        </button>
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-gray-300" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-white px-2 text-gray-500">অথবা শেয়ার করুন</span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2">
+                            {/* Facebook */}
+                            <button 
+                                onClick={handleFacebookShare}
+                                className="flex flex-col items-center justify-center gap-1 bg-[#1877F2] hover:bg-[#166fe5] text-white py-3 rounded-xl font-medium transition-all active:scale-95 shadow-sm"
+                            >
+                                <Facebook size={20} />
+                                <span className="text-xs">Facebook</span>
+                            </button>
+
+                            {/* Twitter */}
+                            <button 
+                                onClick={handleTwitterShare}
+                                className="flex flex-col items-center justify-center gap-1 bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-medium transition-all active:scale-95 shadow-sm"
+                            >
+                                <Twitter size={20} />
+                                <span className="text-xs">Twitter</span>
+                            </button>
+
+                            {/* Native / Generic */}
+                            <button 
+                                onClick={handleNativeShare}
+                                className="flex flex-col items-center justify-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-all active:scale-95 shadow-sm"
+                            >
+                                <Share2 size={20} />
+                                <span className="text-xs">More</span>
+                            </button>
+                        </div>
+
                         <p className="text-center text-xs text-gray-400 mt-2">
-                            *শেয়ার বাটনে ক্লিক করলে ছবিটি ডাউনলোড হবে এবং আপনি ফেসবুকে পোস্ট করতে পারবেন।
+                            *সোশ্যাল মিডিয়ায় শেয়ার করার আগে ছবিটি ডাউনলোড করে নিন।
                         </p>
                     </div>
                 </motion.div>

@@ -24,7 +24,7 @@ export const About = () => {
               {/* Image that turns color on hover */}
               <Image 
                 src="https://picsum.photos/600/800" 
-                alt="Sanjida Tuli Portrait"
+                alt="Sanjida Tulee Portrait"
                 className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
@@ -87,7 +87,7 @@ export const About = () => {
                 </div>
                 {/* Signature Placeholder */}
                 <div className="ml-auto opacity-70">
-                   <div className="font-handwriting text-3xl text-emerald-800 italic font-bold">Sanjida Tuli</div>
+                   <div className="font-handwriting text-3xl text-emerald-800 italic font-bold">Sanjida Tulee</div>
                 </div>
             </motion.div>
           </div>

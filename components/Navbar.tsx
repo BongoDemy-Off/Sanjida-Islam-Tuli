@@ -39,7 +39,7 @@ export const Navbar = () => {
             {/* Logo */}
             <div className="flex-shrink-0 cursor-pointer">
               <span className="text-2xl font-bold text-emerald-800 tracking-tight">
-                Engr. Sanjida Tuli
+                Engr. Sanjida Tulee
               </span>
             </div>
 
